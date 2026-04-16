@@ -8,12 +8,12 @@ Multi-timeframe backtesting engine for a BTC/USDT intraday strategy based on Tok
 
 This project implements a quantitative trading strategy using:
 
-* **H1 data** → defines Tokyo session range and daily validation
+* **H1 data** → defines the Tokyo session range and daily validation
 * **M15 data** → executes trades during the London session
 * **1-minute data (on demand)** → resolves ambiguous TP/SL events intrabar
 * **Dynamic position sizing** → adapts risk based on volatility conditions
 
-The goal is to model a structured intraday setup and evaluate its performance across multiple years of historical data.
+The objective is to model a structured intraday setup and evaluate its performance across multiple years of historical market data.
 
 ---
 
@@ -21,15 +21,15 @@ The goal is to model a structured intraday setup and evaluate its performance ac
 
 1. Define the **Tokyo session range**
 2. Validate the trading day using a **specific H1 candle**
-3. Monitor price during London session for entry conditions
-4. Execute trades based on breakout logic
+3. Monitor price during the London session for entry conditions
+4. Execute trades based on breakout behavior
 5. Apply:
 
    * Stop Loss
    * Take Profit
-6. If both TP and SL are touched in the same candle:
+6. If both TP and SL are touched within the same candle:
 
-   * Resolve using **1-minute Binance data**
+   * Resolve execution using **1-minute Binance data**
 7. Track performance and export results
 
 ---
@@ -39,7 +39,7 @@ The goal is to model a structured intraday setup and evaluate its performance ac
 ```
 .
 ├── backtest.py          # Main backtesting engine
-├── download_data.py     # Script to download historical data (optional)
+├── download_data.py     # Optional script to download historical data
 ├── requirements.txt
 ├── README.md
 └── csv/
@@ -70,7 +70,7 @@ python backtest.py
 This will:
 
 * run the full backtest
-* print a performance summary
+* print a performance summary in the terminal
 * generate an Excel report (`backtest_report.xlsx`)
 
 ---
@@ -88,15 +88,15 @@ The repository already includes the required datasets:
 
 ---
 
-### Optional: Download Data Manually
+### Optional: Rebuild the Dataset
 
-If you prefer to rebuild the dataset yourself, you can use:
+If you prefer not to use the included CSV files, you can regenerate them:
 
 ```bash
 python download_data.py
 ```
 
-This will download historical Binance data and regenerate the CSV files.
+This script downloads historical Binance data and rebuilds the dataset locally.
 
 ---
 
@@ -106,9 +106,41 @@ For certain edge cases (when both TP and SL are touched within the same candle),
 
 * automatically downloads **1-minute Binance data**
 * stores it locally in `data_1m/`
-* reuses it for future runs
+* reuses it in future runs
 
-No manual setup is required for this.
+No manual setup is required for this step.
+
+---
+
+## Results
+
+Backtest period: August 2017 to August 2025
+
+### Performance Summary
+
+* Initial capital: **$2,000**
+* Final capital: **$3,413.93**
+* Net profit: **$1,413.93**
+* Total trades: **878**
+* Win rate: **19.1%**
+* Profit factor: **1.28**
+* Max drawdown: **11.5%**
+
+### Trade Statistics
+
+* Winning trades: **168**
+* Losing trades: **710**
+* Long trades: **419**
+* Short trades: **459**
+* Average trade: **$1.61**
+* Best trade: **$216.17**
+* Worst trade: **-$50.28**
+
+### Interpretation
+
+The strategy operates with a relatively low win rate, but remains profitable due to favorable trade asymmetry and controlled drawdowns.
+
+This suggests that the edge is not derived from frequent accuracy, but from capturing larger directional moves when session structure and volatility conditions align.
 
 ---
 
@@ -132,7 +164,7 @@ No manual setup is required for this.
 
 * This project is intended for **research and educational purposes only**
 * It does **not** constitute financial advice
-* Results depend on data quality and assumptions made in execution logic
+* Results depend on data quality and execution assumptions
 
 ---
 
